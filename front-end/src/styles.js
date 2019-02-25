@@ -10,7 +10,7 @@ export const AppContainer = styled.div`
 
 export const NumberDiv = styled.div`
   background-color: #f280a1;
-  font-size: 4em;
+  font-size: 2.2em;
   font-weight: bold;
   display: flex;
   align-items: center;

@@ -1,17 +1,17 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from "react";
 import {
   NumberDiv,
   NumberListContainer,
   AppContainer,
   AdminForm,
   FocusInput,
-  ColoredButton,
-} from './styles';
-import {eat, list} from './api';
+  ColoredButton
+} from "./styles";
+import { eat, list } from "./api";
 
 export default () => {
   const [tickets, setTickets] = useState([]);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const [isAdmin, setAdmin] = useState(false);
 
   const getList = async setter => {
@@ -22,15 +22,17 @@ export default () => {
   const filteredTickets = () =>
     tickets
       .filter(
-        item => item.stilid.startsWith(input) || item.name.startsWith(input),
+        item =>
+          item.stilid.toLowerCase().includes(input.toLowerCase()) ||
+          item.name.toLowerCase().includes(input.toLowerCase())
       )
       .filter(item => item.count > 0);
 
   const onType = event => {
     const text = event.target.value;
-    if (text === 'hackerman') {
+    if (text === "hackerman") {
       setAdmin(true);
-      setInput('');
+      setInput("");
     } else {
       setInput(text);
     }
@@ -47,10 +49,9 @@ export default () => {
     event.preventDefault();
     const matches = filteredTickets();
     if (matches.length > 0) {
-      setInput('');
       remove(matches[0].stilid);
     } else {
-      alert('no tickets in list');
+      alert("no tickets in list");
     }
   };
 
@@ -68,9 +69,12 @@ export default () => {
       </AdminForm>
       <NumberListContainer>
         {filteredTickets().map(ticket => (
-          <NumberDiv onClick={() => remove(ticket.stilid)}>{`${ticket.name} - ${
-            ticket.stilid
-          }, biljetter kvar: ${ticket.count}`}</NumberDiv>
+          <NumberDiv
+            key={ticket.stilid}
+            onClick={() => remove(ticket.stilid)}
+          >{`${ticket.name} - ${ticket.stilid}, biljetter kvar: ${
+            ticket.count
+          }`}</NumberDiv>
         ))}
       </NumberListContainer>
     </AppContainer>
