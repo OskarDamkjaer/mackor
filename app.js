@@ -1,52 +1,58 @@
-const express = require("express");
-const EventEmitter = require("events");
-const bodyParser = require("body-parser");
-const path = require("path");
-
-const config = require("./config");
+const express = require('express');
+const EventEmitter = require('events');
+const bodyParser = require('body-parser');
+const path = require('path');
+const config = require('./config');
+const fs = require('fs');
 
 const app = express();
 const Stream = new EventEmitter();
 
 app.use(bodyParser.json());
 
+//TODO
 let tickets = [
-  { stilid: "abc1", name: "klas", count: 3 },
-  { stilid: "abc2", name: "klas", count: 3 },
-  { stilid: "abc3", name: "klas", count: 3 },
-  { stilid: "abc4", name: "klas", count: 3 },
-  { stilid: "abc5", name: "klas", count: 3 }
+  {stilid: 'abc1', name: 'klas', count: 3},
+  {stilid: 'abc2', name: 'klas', count: 3},
+  {stilid: 'abc3', name: 'klas', count: 3},
+  {stilid: 'abc4', name: 'klas', count: 3},
+  {stilid: 'abc5', name: 'klas', count: 3},
 ];
 
-app.get("/list", (req, res) => res.json(tickets));
+app.get('/list', (req, res) => res.json(tickets));
 
-app.post("/eat", (req, res) => {
+app.post('/eat', (req, res) => {
   const stilid = req.body.stilid;
   const ticket = tickets.find(item => item.stilid === stilid);
   if (!ticket) {
-    return res.status(400).json({ message: "could not find ticket" });
+    return res.status(400).json({message: 'could not find ticket'});
   }
 
-  if (ticket.mackor < 1) {
-    return res.status(400).json({ message: "out of mackor" });
+  if (ticket.count < 1) {
+    return res.status(400).json({message: 'out of mackor'});
   }
 
   tickets = tickets.map(it =>
-    it.stilid === stilid ? { ...it, count: it.count - 1 } : it
+    it.stilid === stilid ? {...it, count: it.count - 1} : it,
   );
+
+  fs.appendFile(
+    'logs.txt',
+    `${stilid}s biljettantal minskade, date: ${new Date().toString()}`,
+  ); // Async but we don't care
 
   return res.json({
     message: `${ticket.name}s ticket count was reduced`,
-    tickets
+    tickets,
   });
 });
 
-app.use(express.static(path.join(__dirname, "front-end/build")));
+app.use(express.static(path.join(__dirname, 'front-end/build')));
 
-app.get("*", (req, res) =>
-  res.sendFile(path.join(`${__dirname}/front-end/build/index.html`))
+app.get('*', (req, res) =>
+  res.sendFile(path.join(`${__dirname}/front-end/build/index.html`)),
 );
 
 app.listen(config.port, () =>
-  console.log("\nApp started at http://localhost:" + config.port)
+  console.log('\nApp started at http://localhost:' + config.port),
 );
