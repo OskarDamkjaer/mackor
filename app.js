@@ -41,7 +41,7 @@ app.post("/eat", async (req, res) => {
 
   fs.appendFile(
     "logs.txt",
-    `${stilid}s biljettantal minskade, date: ${new Date().toString()}\n`,
+    `${stilid};${new Date().toString()};en macka togs bort\n`,
     err => err && console.log(err)
   ); // Async but we don't care
 
