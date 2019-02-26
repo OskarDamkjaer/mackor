@@ -68,9 +68,11 @@ export default () => {
           onChange={onType}
           autoFocus
         />
-        <ColoredButton color="#8ed081" area="send" type="submit">
-          spendera
-        </ColoredButton>
+        {isAdmin && (
+          <ColoredButton color="#8ed081" area="send" type="submit">
+            spendera
+          </ColoredButton>
+        )}
       </AdminForm>
       <NumberListContainer>
         {filteredTickets().map(ticket => (
