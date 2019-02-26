@@ -62,7 +62,12 @@ export default () => {
   return (
     <AppContainer>
       <AdminForm onSubmit={onFormSubmit}>
-        <FocusInput value={input} onChange={onType} autoFocus />
+        <FocusInput
+          placeholder={"sök här"}
+          value={input}
+          onChange={onType}
+          autoFocus
+        />
         <ColoredButton color="#8ed081" area="send" type="submit">
           spendera
         </ColoredButton>
