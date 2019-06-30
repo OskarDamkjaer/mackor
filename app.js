@@ -6,7 +6,7 @@ const config = require("./config");
 const fs = require("fs");
 const promisify = require("util").promisify;
 const sqlite3 = require("sqlite3").verbose();
-const db = new sqlite3.Database("./mackor.db", err => {
+const db = new sqlite3.Database("./mackor/mackor.db", err => {
   if (err) {
     console.error(err.message);
   }
